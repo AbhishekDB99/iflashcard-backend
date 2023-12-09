@@ -1,17 +1,20 @@
-const express = require('express')
-const router = require('./src/routes')
-const app = express()
-const port = 3000
-const {connectToDatabase} = require('./src/database/index')
+require("dotenv").config();
 
-connectToDatabase()
+const express = require("express");
+const router = require("./src/routes");
+const app = express();
+const port = process.env.PORT;
+const { connectToDatabase } = require("./src/database/index");
 
-app.use('/',router)
+connectToDatabase();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.use(express.json());
+app.use("/", router);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
