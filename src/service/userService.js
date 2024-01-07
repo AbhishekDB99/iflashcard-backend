@@ -11,12 +11,19 @@ const getUserDetailsByUSerName = async (userName) => {
 };
 
 const insertNewUser = async (requestBody) => {
-  const newUser = await userSchema.insertOne({
-    username: requestBody.user_name,
-    email: requestBody.email,
-    age: requestBody.age,
-  });
-  return newUser;
+  const allUsers = await getAllUsers()
+  console.log(allUsers);
+  const isUserFound = allUsers.filter((user)=>user.username == requestBody.user_name)
+  if(isUserFound.length>0){
+    return{message:"User with the username already exists!!!"}
+  }else{
+    const newUser = await userSchema.create({
+      username: requestBody.user_name,
+      email: requestBody.email,
+      age: requestBody.age,
+    });
+    return newUser;
+  }
 };
 
 module.exports = {
