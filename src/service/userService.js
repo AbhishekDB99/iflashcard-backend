@@ -17,10 +17,13 @@ const insertNewUser = async (requestBody) => {
   if(isUserFound.length>0){
     return{message:"User with the username already exists!!!"}
   }else{
+
+    const hashedPassword = requestBody.password
     const newUser = await userSchema.create({
       username: requestBody.user_name,
       email: requestBody.email,
       age: requestBody.age,
+      password:hashedPassword
     });
     return newUser;
   }
