@@ -19,6 +19,7 @@ const insertNewUser = async (requestBody) => {
   }else{
 
     const hashedPassword = requestBody.password
+    console.log(hashedPassword);
     const newUser = await userSchema.create({
       username: requestBody.user_name,
       email: requestBody.email,
