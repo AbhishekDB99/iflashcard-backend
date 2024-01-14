@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const userSchema = require("../models/User");
 
 const getAllUsers = async () => {
@@ -11,22 +12,25 @@ const getUserDetailsByUSerName = async (userName) => {
 };
 
 const insertNewUser = async (requestBody) => {
-  const allUsers = await getAllUsers()
-  console.log(allUsers);
-  const isUserFound = allUsers.filter((user)=>user.username == requestBody.user_name)
-  if(isUserFound.length>0){
-    return{message:"User with the username already exists!!!"}
-  }else{
+  const allUsers = await getAllUsers();
+  const isUserFound = allUsers.filter(
+    (user) => user.username == requestBody.user_name
+  );
+  if (isUserFound.length > 0) {
+    return { message: "User with the username already exists!!!" };
+  } else {
+    const saltRound = 10;
+    const hashedPassword = await bcrypt.hash(requestBody.password, saltRound);
 
-    const hashedPassword = requestBody.password
-    console.log(hashedPassword);
-    const newUser = await userSchema.create({
+    const newUser = {
       username: requestBody.user_name,
       email: requestBody.email,
       age: requestBody.age,
-      password:hashedPassword
-    });
-    return newUser;
+      password: hashedPassword,
+    };
+
+    await userSchema.create(newUser);
+    return {};
   }
 };
 
