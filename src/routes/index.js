@@ -18,6 +18,8 @@ const routes = (app) => {
   app.use(tokenVerification);
 
   app.use("/user", require("./userRoutes.js"));
+
+  app.use("/flash_card", require("./flashCardRoute.js"));
 };
 
 module.exports = routes;
