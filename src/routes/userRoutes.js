@@ -1,8 +1,12 @@
-const { getUserDetails } = require('../controller/userController')
+const {
+  getAllUserDetails,
+  insertNewUserDetails,
+} = require("../controller/userController");
 
-const router = require('express').Router()
+const router = require("express").Router();
 
+router.post("/", getAllUserDetails);
 
-router.get('/:id',getUserDetails)
+router.post("/new_user", insertNewUserDetails);
 
-module.exports = router
+module.exports = router;
