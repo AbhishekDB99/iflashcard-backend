@@ -4,6 +4,7 @@ const flashCardSchema = new mongoose.Schema({
   question: {
     type: String,
     require: true,
+    index: true,
   },
   answer: {
     type: String,
@@ -21,6 +22,9 @@ const flashCardSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     require: false,
+  },
+  index: {
+    type: Number,
   },
 });
 

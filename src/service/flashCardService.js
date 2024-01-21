@@ -18,11 +18,15 @@ const getAllPublishedFlashCardTypes = async () => {
 };
 
 const insertNewCard = async (requestBody, user) => {
+  const documentCount = await flashCardSchema.countDocuments({
+    createdBy: user.username,
+  });
   const newCard = {
     question: requestBody.question,
     answer: requestBody.answer,
     cardType: requestBody.card_type,
     createdBy: user.username,
+    index: +documentCount + 1,
   };
   await flashCardSchema.create(newCard);
   return {};
@@ -31,7 +35,17 @@ const insertNewCard = async (requestBody, user) => {
 const getFlashCardByUserName = async (userName) => {
   const query = { createdBy: userName.username };
   const cards = await flashCardSchema.find(query);
-  return cards;
+  const cardsCount = await flashCardSchema.countDocuments(query);
+  return { cards, cardsCount };
+};
+
+const getRandomFlashCard = async (userName) => {
+  const query = { createdBy: userName.username };
+  const randomCard = await flashCardSchema.aggregate(
+    [{ $sample: { size: 1 } }],
+    query
+  );
+  return randomCard;
 };
 
 module.exports = {
@@ -39,4 +53,5 @@ module.exports = {
   getAllPublishedFlashCardTypes,
   insertNewCard,
   getFlashCardByUserName,
+  getRandomFlashCard,
 };

@@ -3,6 +3,7 @@ const {
   getAllPublishedFlashCardTypes,
   insertNewCard,
   getFlashCardByUserName,
+  getRandomFlashCard,
 } = require("../service/flashCardService");
 
 const insertNewCardType = async (req, res) => {
@@ -51,9 +52,23 @@ const getFlashCardByUserNames = async (req, res) => {
   }
 };
 
+const getRandomFlashCardByUserName = async (req, res) => {
+  try {
+    const response = await getRandomFlashCard(req.user);
+    res.status(200).send({
+      data: response,
+      message: "Cards fetched successfully",
+      status: 200,
+    });
+  } catch (error) {
+    res.status(401).send({ message: "Error fetching cards", status: 401 });
+  }
+};
+
 module.exports = {
   insertNewCardType,
   getAllFlashCardTypes,
   insertANewCard,
   getFlashCardByUserNames,
+  getRandomFlashCardByUserName,
 };
