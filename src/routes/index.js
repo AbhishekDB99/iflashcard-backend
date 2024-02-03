@@ -13,6 +13,8 @@
 const routes = (app) => {
   app.use("/auth", require("./login.js"));
 
+  app.use("/public", require("./public.js"));
+
   const tokenVerification = require("../middleware/tokenVerification.js");
 
   app.use(tokenVerification);
